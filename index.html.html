@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCNM Digital World | Premium Heritage Hub</title>
+    <!-- Tailwind CSS for rapid modern layout -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display for Heritage Serif & Inter for Clean Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Three.js for the Interactive 3D Globe -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        optima: ['Optima', 'Segoe UI', 'Candara', 'source-sans-pro', 'sans-serif'],
+                    },
+                    colors: {
+                        heritage: {
+                            maroon: '#800020',
+                            crimson: '#990000',
+                            gold: '#D4AF37',
+                            champagne: '#F3E5AB',
+                            ivory: '#FAF9F6',
+                            cream: '#FFFDD0',
+                            charcoal: '#2C2C2C',
+                            bronze: '#4A3B32',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FAF9F6; /* Ivory Background */
+            color: #2C2C2C; /* Charcoal descriptive text */
+            overflow-x: hidden;
+        }
+
+        .font-optima {
+            font-family: 'Optima', 'Segoe UI', 'Candara', 'source-sans-pro', 'sans-serif';
+        }
+
+        /* Glassmorphism Luxury Cards adjusted for Soft Ivory backdrop */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(128, 0, 32, 0.08);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Luxury Card Shimmer Animation Reflection Effect */
+        .glass-panel::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 30%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.4) 50%,
+                rgba(255,255,255,0) 100%
+            );
+            transform: rotate(25deg);
+            transition: all 0.7s ease;
+            pointer-events: none;
+        }
+
+        .glass-panel:hover::after {
+            left: 130%;
+            transition: all 0.7s ease;
+        }
+
+        .glass-panel:hover {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: #800020;
+            box-shadow: 0 20px 40px rgba(128, 0, 32, 0.08);
+            transform: translateY(-8px) scale(1.01);
+        }
+
+        .glass-panel-gold {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel-gold::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 30%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                rgba(212, 175, 55, 0) 0%,
+                rgba(212, 175, 55, 0.2) 50%,
+                rgba(212, 175, 55, 0) 100%
+            );
+            transform: rotate(25deg);
+            transition: all 0.8s ease;
+            pointer-events: none;
+        }
+
+        .glass-panel-gold:hover::after {
+            left: 130%;
+            transition: all 0.8s ease;
+        }
+
+        .glass-panel-gold:hover {
+            background: rgba(253, 253, 244, 0.95);
+            border-color: #D4AF37;
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.18);
+            transform: translateY(-8px) scale(1.01);
+        }
+
+        /* Scroll Animation Entrance States */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-element.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Premium scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAF9F6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E4E2DD;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #800020;
+        }
+
+        /* Continuous elegant rotation floating animation */
+        @keyframes subtleFloat {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(0.5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .float-animation {
+            animation: subtleFloat 6s ease-in-out infinite;
+        }
+
+        /* Diamond Shimmer Background Sparks */
+        @keyframes shinePulse {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.15); }
+        }
+        .luxury-shine {
+            animation: shinePulse 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-heritage-charcoal">
+
+    <!-- HEADER / NAVIGATION (Luxury Editorial Style) -->
+    <header class="sticky top-0 z-50 w-full border-b border-heritage-maroon/10 bg-heritage-ivory/80 backdrop-blur-md transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-xl bg-heritage-maroon flex items-center justify-center shadow-md transition-all duration-500 group-hover:rotate-[360deg]">
+                    <span class="text-heritage-champagne font-serif font-bold text-xl">D</span>
+                </div>
+                <div class="flex flex-col font-serif">
+                    <span class="font-bold tracking-wider text-heritage-maroon text-lg leading-none transition-colors group-hover:text-heritage-gold">DCNM</span>
+                    <span class="text-[10px] text-heritage-bronze tracking-widest uppercase font-semibold font-sans">Digital World</span>
+                </div>
+            </a>
+            
+            <nav class="hidden md:flex items-center space-x-8 text-sm tracking-wider uppercase font-semibold font-optima">
+                <a href="#hero" class="text-heritage-bronze hover:text-heritage-maroon transition-all relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-heritage-maroon after:transition-all">Home</a>
+                <a href="#social-hub" class="text-heritage-bronze hover:text-heritage-maroon transition-all relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-heritage-maroon after:transition-all">Social Platforms</a>
+                <a href="#google-reviews" class="text-heritage-bronze hover:text-heritage-maroon transition-all relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-heritage-maroon after:transition-all">Reviews</a>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <a href="#social-hub" class="relative group overflow-hidden px-5 py-2.5 rounded-full bg-heritage-maroon text-heritage-ivory transition-all text-xs tracking-wider font-semibold uppercase shadow-md font-optima hover:bg-heritage-crimson hover:scale-105 duration-300">
+                    <span class="relative z-10 flex items-center gap-2">Explore Hub <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i></span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECTION 1: HERO SECTION -->
+    <section id="hero" class="relative min-h-[95vh] flex items-center justify-center overflow-hidden py-16 px-6 z-10">
+        <div class="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Left Grid: Premium Copywriting -->
+            <div class="lg:col-span-7 flex flex-col justify-center text-center lg:text-left z-20 transition-all duration-1000 transform translate-y-0 opacity-100">
+                <div class="inline-flex items-center justify-center lg:justify-start space-x-2 px-4 py-1.5 rounded-full bg-heritage-maroon/5 border border-heritage-maroon/20 w-fit mx-auto lg:mx-0 mb-6 float-animation font-optima">
+                    <span class="w-2 h-2 rounded-full bg-heritage-gold animate-ping"></span>
+                    <span class="text-xs tracking-widest text-heritage-maroon font-semibold uppercase">The Luxury Ecosystem Hub</span>
+                </div>
+                
+                <h1 id="hero-welcome" class="text-md sm:text-lg font-semibold tracking-widest text-heritage-bronze uppercase font-optima tracking-wide">
+                    WELCOME TO
+                </h1>
+                <h2 id="hero-title" class="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight mt-3 mb-6 font-serif text-heritage-maroon leading-tight">
+                    DCNM <br class="hidden sm:inline"><span class="text-heritage-charcoal font-light transition-colors duration-500 hover:text-heritage-maroon">DIGITAL WORLD</span>
+                </h2>
+                
+                <p id="hero-subtitle" class="text-base sm:text-lg text-heritage-bronze font-light max-w-xl mx-auto lg:mx-0 mb-10 leading-relaxed">
+                    Step inside a masterfully engineered dynamic architecture built for seamless social interaction, branch performance reviews, and customer expression.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start font-optima">
+                    <a href="#social-hub" class="px-8 py-4 bg-heritage-maroon hover:bg-heritage-crimson text-white font-semibold text-sm tracking-widest uppercase rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2">
+                        Get Started <i class="fa-solid fa-compass animate-spin" style="animation-duration: 8s;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Grid: 3D Round World / Interactive Globe -->
+            <div class="lg:col-span-5 flex justify-center items-center relative z-20">
+                <div class="relative w-[340px] h-[340px] sm:w-[450px] sm:h-[450px] flex items-center justify-center group">
+                    <div class="absolute inset-0 rounded-full border border-heritage-gold/20 scale-90 sm:scale-100 pointer-events-none animate-pulse ease-in-out duration-1000"></div>
+                    <div class="absolute inset-4 rounded-full border border-heritage-maroon/10 scale-95 sm:scale-105 pointer-events-none animate-spin group-hover:scale-110 transition-transform" style="animation-duration: 25s;"></div>
+                    
+                    <!-- 3D ThreeJS Canvas Container (The Round World) -->
+                    <div id="globe-container" class="w-full h-full cursor-grab active:cursor-grabbing transition-transform duration-500 hover:scale-105"></div>
+                    
+                    <div class="absolute bottom-2 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-heritage-maroon/10 flex items-center gap-2 shadow-md font-optima">
+                        <i class="fa-solid fa-circle-nodes text-heritage-maroon animate-pulse"></i>
+                        <span class="text-[10px] tracking-widest text-heritage-bronze font-semibold uppercase">Interactive Holographic Earth</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- TRUST STRIP VALUE PROP ENGINE (Heritage Trust Markers) -->
+    <section class="border-y border-heritage-maroon/10 bg-white/50 py-10 px-6 z-10 relative reveal-element">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center font-serif">
+            <div class="flex flex-col items-center space-y-2 group cursor-pointer">
+                <i class="fa-solid fa-award text-heritage-maroon text-2xl mb-1 group-hover:scale-125 group-hover:rotate-6 transition-transform"></i>
+                <h5 class="font-bold text-lg text-heritage-maroon">100% HUID Certified</h5>
+                <p class="text-xs font-sans text-heritage-bronze tracking-wide">Hallmarked purity values guaranteed</p>
+            </div>
+            <div class="flex flex-col items-center space-y-2 group cursor-pointer">
+                <i class="fa-solid fa-gem text-heritage-maroon text-2xl mb-1 group-hover:scale-125 group-hover:animate-bounce transition-all"></i>
+                <h5 class="font-bold text-lg text-heritage-maroon">Authentic Diamonds</h5>
+                <p class="text-xs font-sans text-heritage-bronze tracking-wide">Certified light brilliance configurations</p>
+            </div>
+            <div class="flex flex-col items-center space-y-2 group cursor-pointer">
+                <i class="fa-solid fa-clock-rotate-left text-heritage-maroon text-2xl mb-1 group-hover:scale-125 group-hover:rotate-[-12deg] transition-transform"></i>
+                <h5 class="font-bold text-lg text-heritage-maroon">Heritage Excellence</h5>
+                <p class="text-xs font-sans text-heritage-bronze tracking-wide">Legacy built on foundational purity since 1992</p>
+            </div>
+            <div class="flex flex-col items-center space-y-2 group cursor-pointer">
+                <i class="fa-solid fa-handshake text-heritage-maroon text-2xl mb-1 group-hover:scale-125 transition-transform"></i>
+                <h5 class="font-bold text-lg text-heritage-maroon">Trusted Interactions</h5>
+                <p class="text-xs font-sans text-heritage-bronze tracking-wide">Secure transactional ecosystem operations</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: EXPLORE OUR SOCIAL MEDIA -->
+    <section id="social-hub" class="relative py-28 px-6 z-10 bg-gradient-to-b from-transparent to-white/40">
+        <div class="max-w-7xl mx-auto reveal-element">
+            
+            <div class="text-center max-w-3xl mx-auto mb-20">
+                <div class="inline-block px-4 py-1.5 rounded-full bg-heritage-maroon/5 border border-heritage-maroon/10 mb-4 font-optima">
+                    <span class="text-xs tracking-widest text-heritage-maroon font-semibold uppercase">Connected Universe</span>
+                </div>
+                <h2 id="social-heading" class="text-3xl sm:text-5xl font-bold font-serif tracking-tight text-heritage-maroon mb-6 transition-all duration-500 hover:tracking-wide">
+                    EXPLORE OUR SOCIAL MEDIA
+                </h2>
+                <div class="w-24 h-0.5 bg-heritage-gold mx-auto rounded-full transition-all duration-700 hover:w-40"></div>
+            </div>
+
+            <!-- 9 High End Animated Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="social-grid">
+                <!-- Cards injected programmatically with JS -->
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 3: GOOGLE REVIEWS -->
+    <section id="google-reviews" class="relative py-28 px-6 z-10 border-t border-heritage-maroon/10 bg-gradient-to-b from-white/40 to-transparent">
+        <div class="max-w-7xl mx-auto reveal-element">
+            
+            <div class="text-center max-w-3xl mx-auto mb-20">
+                <div class="inline-block px-4 py-1.5 rounded-full bg-heritage-gold/20 border border-heritage-gold/40 mb-4 font-optima">
+                    <span class="text-xs tracking-widest text-heritage-maroon font-semibold uppercase">Client Voices</span>
+                </div>
+                <h2 id="reviews-heading" class="text-3xl sm:text-5xl font-bold font-serif tracking-tight text-heritage-maroon mb-6">
+                    GOOGLE REVIEWS & FEEDBACK
+                </h2>
+                <div class="w-24 h-0.5 bg-heritage-gold mx-auto rounded-full"></div>
+                <p class="text-heritage-bronze mt-6 max-w-xl mx-auto font-light text-sm sm:text-base">
+                    Select your preferred regional branch to submit an authentic Google review to our corporate profiles.
+                </p>
+            </div>
+
+            <!-- 6 Branch Review Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="reviews-grid">
+                <!-- Dynamic Review cards injected here -->
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 4: THANK YOU SECTION -->
+    <section class="relative py-32 px-6 z-10 border-t border-heritage-maroon/10 overflow-hidden bg-white/20 reveal-element">
+        <div class="max-w-5xl mx-auto text-center relative z-20">
+            <div class="w-20 h-20 rounded-full bg-heritage-maroon/5 border border-heritage-maroon/20 flex items-center justify-center mx-auto mb-8 float-animation">
+                <i class="fa-solid fa-shield-heart text-heritage-maroon text-3xl animate-pulse"></i>
+            </div>
+            
+            <h2 id="thankyou-title" class="text-4xl sm:text-6xl font-bold tracking-tight font-serif text-heritage-maroon mb-6">
+                THANK YOU FOR JOINING OUR <br><span class="text-heritage-charcoal font-light">DCNM FAMILY</span>
+            </h2>
+            
+            <p id="thankyou-subtitle" class="text-heritage-bronze font-light max-w-2xl mx-auto leading-relaxed text-sm sm:text-base">
+                Your presence in our ecosystem drives our relentless pursuit of futuristic luxury, perfect operational performance, and worldwide connectivity. Let us reshape the boundaries together.
+            </p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 border-t border-heritage-maroon/10 bg-heritage-charcoal py-12 px-6 text-heritage-ivory">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-heritage-gold flex items-center justify-center shadow-md">
+                    <span class="text-heritage-maroon font-serif font-bold text-sm">D</span>
+                </div>
+                <div class="text-left font-serif">
+                    <span class="font-bold tracking-wider text-white text-md">DCNM</span>
+                    <p class="text-[9px] text-heritage-champagne tracking-widest uppercase font-sans">Digital World</p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-8 text-xs text-gray-300 font-optima">
+                <a href="#" class="hover:text-heritage-gold transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-heritage-gold transition-colors">Terms & Conditions</a>
+                <a href="#" class="hover:text-heritage-gold transition-colors">Global Network</a>
+                <a href="#" class="hover:text-gold transition-colors">Interactive Hub</a>
+            </div>
+
+            <div class="flex flex-col items-center md:items-end gap-2 text-xs text-gray-400 font-optima">
+                <span>&copy; <span id="current-year">2026</span> DCNM Digital World. All Rights Reserved.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MAIN FUNCTIONAL JAVASCRIPT -->
+    <script>
+        // --- 1. CLEAN RE-DIRECTIONS DESIGNED TO BYPASS DEVICE FIREWALLS & SECURE BLOCKERS ---
+        const socialLinks = {
+            instagram: "https://www.instagram.com/dhamuchettiar/",
+            youtube: "https://www.youtube.com/@DCNM-",
+            facebook: "https://www.facebook.com/people/Dhamu-Chettiar-Nagai-Maaligai-DCNM/61551798070420/",
+            pinterest: "https://in.pinterest.com/dhamuchettiarnagaimaaligai/",
+            whatsapp: "https://whatsapp.com/channel/0029Vau3aGc8KMqqiJJDY60n", 
+            x: "https://x.com/Dcnm_1992",
+            website: "https://www.dcnmjewels.in/", 
+            android: "https://play.google.com/store/apps/details?id=com.dhamu.wincrm&pcampaignid=web_share",
+            ios: "https://apps.apple.com/us/app/dhamu-jewels/id1620156464"
+        };
+
+        const reviewLinks = {
+            gobi: "https://g.page/r/Ce0TtEyV_RWmEAE/review",
+            anthiyur: "https://g.page/r/Ce-CcnAFXcaIEAE/review",
+            sathy: "https://g.page/r/CVbjLBKv9W0eEAE/review",
+            avinashi: "https://g.page/r/CebHIZiISWnUEAE/review",
+            thalavadi: "https://g.page/r/CWRocvP5_AF9EAE/review",
+            jmm: "https://g.page/r/CXAzoFGOYEIeEAE/review"
+        };
+
+        const cmsContent = {
+            welcomeTag: "THE LUXURY ECOSYSTEM HUB",
+            welcomeTitle: "DCNM DIGITAL WORLD",
+            welcomeSubtitle: "Step inside a masterfully engineered dynamic architecture built for seamless social interaction, branch performance reviews, and customer expression.",
+            socialTitle: "EXPLORE OUR SOCIAL MEDIA",
+            reviewTitle: "GOOGLE REVIEWS & FEEDBACK",
+            thankMessage: "Your presence in our ecosystem drives our relentless pursuit of futuristic luxury, perfect operational performance, and worldwide connectivity. Let us reshape the boundaries together."
+        };
+
+        // --- 2. THE THREE.JS 3D ROUND WORLD LOGIC ---
+        function initThreeJSGlobe() {
+            const container = document.getElementById('globe-container');
+            if(!container) return;
+
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            camera.position.z = 220;
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
+            container.appendChild(renderer.domElement);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+            scene.add(ambientLight);
+
+            const pointLight = new THREE.PointLight(0xD4AF37, 2, 500);
+            pointLight.position.set(100, 100, 100);
+            scene.add(pointLight);
+
+            const globeGroup = new THREE.Group();
+            scene.add(globeGroup);
+
+            const particleCount = 1800;
+            const particlesGeo = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const r = 80;
+
+            for (let i = 0; i < particleCount; i++) {
+                const phi = Math.acos(-1 + (2 * i) / particleCount);
+                const theta = Math.sqrt(particleCount * Math.PI) * phi;
+
+                const x = r * Math.sin(phi) * Math.cos(theta);
+                const y = r * Math.sin(phi) * Math.sin(theta);
+                const z = r * Math.cos(phi);
+
+                positions[i * 3] = x;
+                positions[i * 3 + 1] = y;
+                positions[i * 3 + 2] = z;
+            }
+
+            particlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            
+            const particlesMat = new THREE.PointsMaterial({
+                color: 0x800020, 
+                size: 1.8,
+                transparent: true,
+                opacity: 0.85,
+                blending: THREE.NormalBlending
+            });
+
+            const pointCloud = new THREE.Points(particlesGeo, particlesMat);
+            globeGroup.add(pointCloud);
+
+            const wireSphereGeo = new THREE.SphereGeometry(78, 24, 24);
+            const wireSphereMat = new THREE.MeshBasicMaterial({
+                color: 0xD4AF37, 
+                wireframe: true,
+                transparent: true,
+                opacity: 0.15
+            });
+            const wireSphere = new THREE.Mesh(wireSphereGeo, wireSphereMat);
+            globeGroup.add(wireSphere);
+
+            const ringsCount = 2;
+            for(let j = 0; j < ringsCount; j++) {
+                const ringGeo = new THREE.RingGeometry(84, 84.4, 64);
+                const ringMat = new THREE.MeshBasicMaterial({
+                    color: 0xD4AF37,
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    opacity: 0.2
+                });
+                const ring = new THREE.Mesh(ringGeo, ringMat);
+                ring.rotation.x = Math.random() * Math.PI;
+                ring.rotation.y = Math.random() * Math.PI;
+                globeGroup.add(ring);
+            }
+
+            let isDragging = false;
+            let previousMousePosition = { x: 0, y: 0 };
+
+            const handleStart = (e) => {
+                isDragging = true;
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                previousMousePosition = { x: clientX, y: clientY };
+            };
+
+            const handleMove = (e) => {
+                if (!isDragging) return;
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+                const deltaMove = {
+                    x: clientX - previousMousePosition.x,
+                    y: clientY - previousMousePosition.y
+                };
+
+                globeGroup.rotation.y += deltaMove.x * 0.005;
+                globeGroup.rotation.x += deltaMove.y * 0.005;
+
+                previousMousePosition = { x: clientX, y: clientY };
+            };
+
+            const handleEnd = () => { isDragging = false; };
+
+            container.addEventListener('mousedown', handleStart);
+            container.addEventListener('mousemove', handleMove);
+            window.addEventListener('mouseup', handleEnd);
+
+            container.addEventListener('touchstart', handleStart, { passive: true });
+            container.addEventListener('touchmove', handleMove, { passive: true });
+            window.addEventListener('touchend', handleEnd);
+
+            function animate() {
+                requestAnimationFrame(animate);
+                if (!isDragging) {
+                    globeGroup.rotation.y += 0.0012;
+                    globeGroup.rotation.x += 0.0002;
+                }
+                renderer.render(scene, camera);
+            }
+
+            window.addEventListener('resize', () => {
+                const w = container.clientWidth;
+                const h = container.clientHeight;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            });
+
+            animate();
+        }
+
+        // --- 3. DYNAMIC RENDERING MODULES ---
+        function renderSocialCards() {
+            const container = document.getElementById('social-grid');
+            if(!container) return;
+
+            const platforms = [
+                { key: 'instagram', name: 'Instagram', desc: 'Visual storytelling, updates, and interactions.', icon: 'fa-brands fa-instagram text-pink-700', colorClass: 'border-heritage-maroon/10 hover:border-heritage-maroon/60' },
+                { key: 'youtube', name: 'YouTube', desc: 'Premium digital broadcasts and masterclass showcases.', icon: 'fa-brands fa-youtube text-red-700', colorClass: 'border-heritage-maroon/10 hover:border-heritage-maroon/60' },
+                { key: 'facebook', name: 'Facebook', desc: 'Community interaction and localized developments.', icon: 'fa-brands fa-facebook text-blue-800', colorClass: 'border-heritage-maroon/10 hover:border-heritage-maroon/60' },
+                { key: 'pinterest', name: 'Pinterest', desc: 'Inspirational board designs and visual discoveries.', icon: 'fa-brands fa-pinterest text-red-700', colorClass: 'border-heritage-maroon/10 hover:border-heritage-maroon/60' },
+                { key: 'whatsapp', name: 'WhatsApp Channel', desc: 'Realtime ecosystem updates directly on your mobile.', icon: 'fa-brands fa-whatsapp text-green-700', colorClass: 'border-heritage-maroon/10 hover:border-heritage-maroon/60' },
+                { key: 'x', name: 'X Platform', desc: 'Instant messaging & analytical declarations.', icon: 'fa-brands fa-x-twitter text-heritage-charcoal', colorClass: 'border-heritage-maroon/10 hover:border-heritage-maroon/60' },
+                { key: 'website', name: 'Official Website', desc: 'Your comprehensive digital corporate portal.', icon: 'fa-solid fa-globe text-heritage-gold', colorClass: 'border-heritage-maroon/10 hover:border-heritage-maroon/60' },
+                { key: 'android', name: 'Android App', desc: 'Optimized performance engine for your mobile.', icon: 'fa-brands fa-android text-green-600', colorClass: 'border-heritage-maroon/10 hover:border-heritage-maroon/60' },
+                { key: 'ios', name: 'iOS App', desc: 'The apex fluid visual experience for iOS devices.', icon: 'fa-brands fa-apple text-stone-700', colorClass: 'border-heritage-maroon/10 hover:border-heritage-maroon/60' },
+            ];
+
+            container.innerHTML = platforms.map(p => `
+                <a href="${socialLinks[p.key]}" target="_blank" rel="noopener noreferrer" class="glass-panel rounded-2xl p-8 flex flex-col justify-between group h-64 border ${p.colorClass}">
+                    <div class="space-y-4">
+                        <div class="w-14 h-14 rounded-xl bg-heritage-ivory flex items-center justify-center border border-heritage-maroon/10 transition-transform group-hover:scale-110 duration-300">
+                            <i class="${p.icon} text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold font-serif text-heritage-maroon tracking-wide flex items-center gap-2 group-hover:text-heritage-gold transition-colors">
+                            ${p.name}
+                            <i class="fa-solid fa-chevron-right text-[10px] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
+                        </h3>
+                        <p class="text-heritage-bronze text-xs font-light leading-relaxed font-sans">${p.desc}</p>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-heritage-maroon/5 flex items-center justify-between text-[10px] uppercase font-bold tracking-widest text-heritage-bronze group-hover:text-heritage-maroon transition-colors font-optima">
+                        <span>Join Redirection</span>
+                        <span class="text-heritage-gold transition-colors">dcnm.link</span>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        function renderReviewCards() {
+            const container = document.getElementById('reviews-grid');
+            if(!container) return;
+
+            const branches = [
+                { key: 'gobi', name: 'Gobi Branch' },
+                { key: 'anthiyur', name: 'Anthiyur Branch' },
+                { key: 'sathy', name: 'Sathy Branch' },
+                { key: 'avinashi', name: 'Avinashi Branch' },
+                { key: 'thalavadi', name: 'Talavadi Branch' },
+                { key: 'jmm', name: 'JMM Branch' }
+            ];
+
+            container.innerHTML = branches.map(b => `
+                <div class="glass-panel-gold rounded-2xl p-8 flex flex-col justify-between h-72">
+                    <div>
+                        <div class="flex items-center justify-between mb-4 font-optima">
+                            <span class="text-xs uppercase tracking-widest text-heritage-maroon font-bold">Branch Hub</span>
+                            <div class="w-8 h-8 rounded-full bg-heritage-maroon/5 border border-heritage-maroon/10 flex items-center justify-center text-heritage-maroon">
+                                <i class="fa-brands fa-google"></i>
+                            </div>
+                        </div>
+                        
+                        <h4 class="text-xl font-bold font-serif text-heritage-charcoal tracking-wide">${b.name}</h4>
+                        <div class="flex items-center space-x-1 text-heritage-gold my-3 text-xs font-sans">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <span class="text-heritage-bronze ml-2 font-semibold">5.0 (Review Matrix)</span>
+                        </div>
+                        
+                        <p class="text-heritage-bronze text-xs font-light leading-relaxed font-sans">Submit your feedback directly to Google and rate your experience at our ${b.name} office.</p>
+                    </div>
+
+                    <a href="${reviewLinks[b.key]}" target="_blank" rel="noopener noreferrer" class="w-full py-3 bg-heritage-maroon hover:bg-heritage-crimson text-white rounded-lg font-bold text-xs tracking-widest uppercase transition-all duration-300 flex items-center justify-center gap-2 font-optima shadow-sm">
+                        Write Review <i class="fa-solid fa-pen-nib"></i>
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        function applyCMSContent() {
+            const tag = document.getElementById('hero-welcome');
+            const subtitle = document.getElementById('hero-subtitle');
+
+            if(tag) tag.textContent = cmsContent.welcomeTag;
+            if(subtitle) subtitle.textContent = cmsContent.welcomeSubtitle;
+        }
+
+        // --- 4. ADVANCED NATIVE SCROLL DEPLOY REVEAL MATRIX ---
+        function initScrollAnimations() {
+            const revealElements = document.querySelectorAll('.reveal-element');
+            
+            const observerOptions = {
+                root: null,
+                threshold: 0.1,
+                rootMargin: "0px 0px -40px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); // Animates once for production speed optimization
+                    }
+                });
+            }, observerOptions);
+
+            revealElements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+
+        // --- 5. RUN EXECUTIONS ON LOAD ---
+        window.addEventListener('load', () => {
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            initThreeJSGlobe();
+            renderSocialCards();
+            renderReviewCards();
+            applyCMSContent();
+            initScrollAnimations();
+        });
+    </script>
+</body>
+</html>
